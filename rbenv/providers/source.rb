@@ -3,6 +3,9 @@ action :install do
   user_root = (new_resource.user == 'root') ? '/root' : "/home/#{new_resource.user}"
   rbenv_root = "#{user_root}/.rbenv"
 
+  package 'git-core'
+  package 'curl'
+
   execute "git clone git://github.com/sstephenson/rbenv.git #{rbenv_root}" do
     not_if "ls #{rbenv_root}"
     user new_resource.user
