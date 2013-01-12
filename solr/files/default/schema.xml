@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<schema name="example" version="1.5">
+
+  <fields>
+
+    <field name="manu_exact" type="string" indexed="true" stored="false"/>
+    <field name="_version_" type="long" indexed="true" stored="true"/>
+    <dynamicField name="*_dt"  type="date"    indexed="true"  stored="true"/>
+    <dynamicField name="*_dts" type="date"    indexed="true"  stored="true" multiValued="true"/>
+    <dynamicField name="*_ti" type="tint"    indexed="true"  stored="true"/>
+    <dynamicField name="*_tl" type="tlong"   indexed="true"  stored="true"/>
+    <dynamicField name="*_tf" type="tfloat"  indexed="true"  stored="true"/>
+    <dynamicField name="*_td" type="tdouble" indexed="true"  stored="true"/>
+    <dynamicField name="*_tdt" type="tdate"  indexed="true"  stored="true"/>
+    <dynamicField name="*_pi"  type="pint"    indexed="true"  stored="true"/>
+    <dynamicField name="ignored_*" type="ignored" multiValued="true"/>
+    <dynamicField name="random_*" type="random" />
+    <field name="id" type="string" indexed="true" stored="true" required="true" />
+    <dynamicField name="*_b" stored="false" type="boolean" multiValued="false" indexed="true"/>
+    <dynamicField name="*_bs" stored="true" type="boolean" multiValued="false" indexed="true"/>
+    <dynamicField name="*_bn" stored="true" type="boolean" multiValued="false" indexed="false"/>
+    <dynamicField name="*_s" stored="false" type="string" multiValued="false" indexed="true"/>
+    <dynamicField name="*_ss" stored="true" type="string" multiValued="false" indexed="true"/>
+    <dynamicField name="*_sn" stored="true" type="string" multiValued="false" indexed="false"/>
+    <dynamicField name="*_i" stored="false" type="tint" multiValued="false" indexed="true"/>
+    <dynamicField name="*_is" stored="true" type="tint" multiValued="false" indexed="true"/>
+    <dynamicField name="*_in" stored="true" type="int" multiValued="false" indexed="false"/>
+    <dynamicField name="*_f" stored="false" type="tfloat" multiValued="false" indexed="true"/>
+    <dynamicField name="*_fs" stored="true" type="tfloat" multiValued="false" indexed="true"/>
+    <dynamicField name="*_fn" stored="true" type="float" multiValued="false" indexed="false"/>
+
+  </fields>
+
+  <uniqueKey>id</uniqueKey>
+
+  <types>
+
+    <fieldType name="string" class="solr.StrField" sortMissingLast="true" />
+    <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true"/>
+    <fieldType name="int" class="solr.TrieIntField" precisionStep="0" positionIncrementGap="0"/>
+    <fieldType name="float" class="solr.TrieFloatField" precisionStep="0" positionIncrementGap="0"/>
+    <fieldType name="long" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0"/>
+    <fieldType name="double" class="solr.TrieDoubleField" precisionStep="0" positionIncrementGap="0"/>
+    <fieldType name="tint" class="solr.TrieIntField" precisionStep="8" positionIncrementGap="0"/>
+    <fieldType name="tfloat" class="solr.TrieFloatField" precisionStep="8" positionIncrementGap="0"/>
+    <fieldType name="tlong" class="solr.TrieLongField" precisionStep="8" positionIncrementGap="0"/>
+    <fieldType name="tdouble" class="solr.TrieDoubleField" precisionStep="8" positionIncrementGap="0"/>
+    <fieldType name="date" class="solr.TrieDateField" precisionStep="0" positionIncrementGap="0"/>
+    <fieldType name="tdate" class="solr.TrieDateField" precisionStep="6" positionIncrementGap="0"/>
+    <fieldtype name="binary" class="solr.BinaryField"/>
+    <fieldType name="pint" class="solr.IntField"/>
+    <fieldType name="plong" class="solr.LongField"/>
+    <fieldType name="pfloat" class="solr.FloatField"/>
+    <fieldType name="pdouble" class="solr.DoubleField"/>
+    <fieldType name="pdate" class="solr.DateField" sortMissingLast="true"/>
+    <fieldType name="random" class="solr.RandomSortField" indexed="true" />
+    <fieldtype name="ignored" stored="false" indexed="false" multiValued="true" class="solr.StrField" />
+    <fieldType name="point" class="solr.PointType" dimension="2" subFieldSuffix="_d"/>
+    <fieldType name="location" class="solr.LatLonType" subFieldSuffix="_coordinate"/>
+    <fieldType name="location_rpt" class="solr.SpatialRecursivePrefixTreeFieldType"
+        geo="true" distErrPct="0.025" maxDistErr="0.000009" units="degrees" />
+
+  </types>
+
+</schema>
