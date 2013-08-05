@@ -2,12 +2,13 @@ action :install do
 
   user_root = (new_resource.user == 'root') ? '/root' : "/home/#{new_resource.user}"
   gem_version = (new_resource.gem_version.empty?) ? '' : "-v=#{new_resource.gem_version}"
+  source_url = (new_resource.source.empty?) ? '' : "--source #{new_resource.source}"
 
   bash "install #{new_resource.gem_name} gem for ruby #{new_resource.ruby_version} with rbenv for user #{new_resource.user}" do
     user new_resource.user
     group new_resource.user
     flags '-l'
-    code "cd /tmp && rbenv local #{new_resource.ruby_version} && cd /tmp && rbenv exec gem install #{gem_version} #{new_resource.gem_name} && rbenv rehash && rm -f /tmp/.rbenv-version"
+    code "cd /tmp && rbenv local #{new_resource.ruby_version} && cd /tmp && rbenv exec gem install #{gem_version} #{new_resource.gem_name} #{source_url} && rbenv rehash && rm -f /tmp/.rbenv-version"
     environment  ({'HOME' => user_root})
     not_if "ls -R #{user_root}/.rbenv | grep '/gems/#{new_resource.gem_name}-#{new_resource.gem_version}'"
   end
