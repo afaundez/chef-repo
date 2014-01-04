@@ -12,7 +12,7 @@ if ['debian','ubuntu'].member? node[:platform]
   # Make sure it's installed. It would be a pretty broken system
   # that didn't have it.
   package "tzdata" do
-    action :upgrade
+    action [:install, :upgrade]
   end
 
   template "/etc/timezone" do
@@ -29,16 +29,4 @@ if ['debian','ubuntu'].member? node[:platform]
     action :nothing
   end
 
-elsif ['rhel','centos','scientific','amazon'].member? node[:platform]
-
-  require 'chef/util/file_edit'
-  package 'tzdata'
-
-  link '/etc/localtime' do
-    to "/usr/share/zoneinfo/#{node[:tz]}"
-  end
-
-  clock = Chef::Util::FileEdit.new("/etc/sysconfig/clock")
-  clock.search_file_replace_line(/^ZONE=.*$/, "ZONE=\"#{node[:tz]}\"")
-  clock.write_file
 end

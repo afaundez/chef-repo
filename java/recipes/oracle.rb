@@ -18,23 +18,26 @@
 # limitations under the License.
 
 
-java_home = node['java']["java_home"]
-arch = node['java']['arch']
-jdk_version = node['java']['jdk_version']
+java_home = node.java["java_home"]
+arch = node.java['arch']
+jdk_version = node.java['jdk_version']
 
 #convert version number to a string if it isn't already
 if jdk_version.instance_of? Fixnum
   jdk_version = jdk_version.to_s
 end
 
-case jdk_version
-when "6"
-  tarball_url = node['java']['jdk']['6'][arch]['url']
-  tarball_checksum = node['java']['jdk']['6'][arch]['checksum']
-when "7"
-  tarball_url = node['java']['jdk']['7'][arch]['url']
-  tarball_checksum = node['java']['jdk']['7'][arch]['checksum']
-end
+# case jdk_version
+# when "6"
+#   tarball_url = node.java['jdk']['6'][arch]['url']
+#   tarball_checksum = node.java['jdk']['6'][arch]['checksum']
+# when "7"
+#   tarball_url = node.java['jdk']['7'][arch]['url']
+#   tarball_checksum = node.java['jdk']['7'][arch]['checksum']
+# end
+
+tarball_url = node.java['jdk'][jdk_version][arch]['url']
+tarball_checksum = node.java['jdk'][jdk_version][arch]['checksum']
 
 if tarball_url =~ /example.com/
   Chef::Application.fatal!("You must change the download link to your private repository. You can no longer download java directly from http://download.oracle.com without a web broswer")
@@ -48,7 +51,7 @@ end
 
 file "/etc/profile.d/jdk.sh" do
   content <<-EOS
-    export JAVA_HOME=#{node['java']["java_home"]}
+    export JAVA_HOME=#{node.java["java_home"]}
   EOS
   mode 0755
 end
@@ -62,3 +65,7 @@ java_ark "jdk" do
   action :install
 end
 
+java_tz 'update java timezone' do
+  url 'https://dl.dropboxusercontent.com/u/8130946/firenxis/tzupdater.jar'
+  action :update
+end

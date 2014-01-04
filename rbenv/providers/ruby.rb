@@ -2,29 +2,18 @@ action :install do
 
   user_root = (new_resource.user == 'root') ? '/root' : "/home/#{new_resource.user}"
 
+  package 'git-core'
+  package 'curl'
+  package 'build-essential'
+  package 'zlib1g-dev'
+  package 'libssl-dev'
   if platform?('ubuntu')
-    package 'git-core'
-    package 'curl'
-    package 'build-essential'
-    package 'zlib1g-dev'
-    package 'libssl-dev'
     case node.platform_version
-    when 10.04
+    when "10.04"
       package 'libreadline5-dev'
-      break
-    when 12.04
+    when "12.04"
       package 'libreadline-gplv2-dev'
-      break
     end
-  elsif platform?('redhat', 'centos')
-    package 'git'
-    package 'curl-devel'
-    execute 'yum groupinstall -y "Development Tools"'
-    package 'zlib'
-    package 'zlib-devel'
-    package 'openssl-devel'
-    package 'readline'
-    package 'readline-devel'
   end
 
   bash "install ruby #{new_resource.version} with rbenv for user #{new_resource.user}" do
